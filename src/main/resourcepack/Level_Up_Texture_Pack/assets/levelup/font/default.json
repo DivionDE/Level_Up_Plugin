@@ -1,0 +1,67 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "levelup:font/bossbar_first_segment.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE001"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/bossbar_middle_segment.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE002"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/bossbar_divide_segment.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE003"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/bossbar_end_segment.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE004"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/combat_icon.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE005"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/mining_icon.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE006"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/farming_icon.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE007"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/woodcutting_icon.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE008"]
+    },
+    {
+      "type": "bitmap",
+      "file": "levelup:font/excavation_icon.png",
+      "ascent": 8,
+      "height": 12,
+      "chars": ["\uE009"]
+    }
+  ]
+}

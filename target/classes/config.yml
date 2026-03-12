@@ -1,0 +1,480 @@
+xp_multipliers:       #Generall XP Multipliers for each Skill, can be used to balance the XP gain of each skill
+  mining: 1.0
+  farming: 1.0
+  combat: 1.0
+  excavation: 1.0
+
+mining-xp:            # Mining XP for each Block, XP fully customizable, can be used to balance the XP gain of each block
+  - xp: 0.5
+    blocks:
+      - NETHERRACK
+  - xp: 1
+    blocks:
+      - STONE
+      - COBBLESTONE
+      - ANDESITE
+      - DIORITE
+      - GRANITE
+      - TUFF
+      - CALCITE
+      - BASALT
+      - END_STONE
+      - BLACKSTONE
+      - DEEPSLATE
+      - TERRACOTTA
+      - WHITE_TERRACOTTA
+      - ORANGE_TERRACOTTA
+      - MAGENTA_TERRACOTTA
+      - LIGHT_BLUE_TERRACOTTA
+      - YELLOW_TERRACOTTA
+      - LIME_TERRACOTTA
+      - PINK_TERRACOTTA
+      - GRAY_TERRACOTTA
+      - LIGHT_GRAY_TERRACOTTA
+      - CYAN_TERRACOTTA
+      - PURPLE_TERRACOTTA
+      - BLUE_TERRACOTTA
+      - BROWN_TERRACOTTA
+      - GREEN_TERRACOTTA
+      - RED_TERRACOTTA
+      - BLACK_TERRACOTTA
+  - xp: 2
+    blocks:
+      - COAL_ORE
+      - COPPER_ORE
+  - xp: 3
+    blocks:
+      - DEEPSLATE_COAL_ORE
+      - DEEPSLATE_COPPER_ORE
+      - LAPIS_ORE
+      - DEEPSLATE_LAPIS_ORE
+      - NETHER_GOLD_ORE
+      - NETHER_QUARTZ_ORE
+      - IRON_ORE
+      - DEEPSLATE_IRON_ORE
+  - xp: 4
+    blocks:
+      - GOLD_ORE
+      - DEEPSLATE_GOLD_ORE
+      - REDSTONE_ORE
+      - DEEPSLATE_REDSTONE_ORE
+      - AMETHYST_BLOCK
+  - xp: 7
+    blocks:
+      - DIAMOND_ORE
+      - DEEPSLATE_DIAMOND_ORE
+      - BUDDING_AMETHYST_BLOCK
+  - xp: 10
+    blocks:
+      - EMERALD_ORE
+  - xp: 15
+    blocks:
+      - ANCIENT_DEBRIS
+      - DEEPSLATE_EMERALD_ORE
+  - xp: 27
+    blocks:
+      - RAW_IRON_BLOCK
+      - RAW_COPPER_BLOCK
+  - xp: 36
+    blocks:
+      - RAW_GOLD_BLOCK
+
+woodcutting-xp:       # Woodcutting XP for each Block, XP fully customizable, can be used to balance the XP gain of each block
+  - xp: 0.5
+    blocks:
+      - OAK_LEAVES
+      - SPRUCE_LEAVES
+      - BIRCH_LEAVES
+      - JUNGLE_LEAVES
+      - ACACIA_LEAVES
+      - DARK_OAK_LEAVES
+      - MANGROVE_LEAVES
+      - CHERRY_LEAVES
+      - NETHER_WART_BLOCK
+      - WARPED_WART_BLOCK
+      - PALE_OAK_LEAVES
+  - xp: 1
+    blocks:
+      - OAK_LOG
+      - SPRUCE_LOG
+      - BIRCH_LOG
+      - JUNGLE_LOG
+      - ACACIA_LOG
+      - DARK_OAK_LOG
+      - MANGROVE_LOG
+      - CHERRY_LOG
+      - PALE_OAK_LOG
+      - CRIMSON_STEM
+      - WARPED_STEM
+      - RED_MUSHROOM_BLOCK
+      - BROWN_MUSHROOM_BLOCK
+
+farming-xp:           # Farming XP for each Block, XP fully customizable, can be used to balance the XP gain of each block
+  - xp: 1
+    blocks:
+      - WHEAT
+      - CARROTS
+      - POTATOES
+      - BEETROOTS
+  - xp: 2
+    blocks:
+      - SUGAR_CANE
+      - BAMBOO
+      - CACTUS
+      - SWEET_BERRY_BUSH
+      - GLOW_BERRIES
+      - KELP
+      - KELP_PLANT
+      - SEAGRASS
+      - TALL_SEAGRASS
+  - xp: 3
+    blocks:
+      - MELON
+      - PUMPKIN
+      - CARVED_PUMPKIN
+      - COCOA
+      - RED_MUSHROOM
+      - BROWN_MUSHROOM
+      - MUSHROOM_STEM
+      - SMALL_DRIPLEAF
+      - BIG_DRIPLEAF
+  - xp: 4
+    blocks:
+      - NETHER_WART
+      - FLOWERING_AZALEA
+
+excavation-xp:        # Excavation XP for each Block, XP fully customizable, can be used to balance the XP gain of each block
+  - xp: 1
+    blocks:
+      - DIRT
+      - GRASS_BLOCK
+      - FARMLAND
+      - COARSE_DIRT
+      - ROOTED_DIRT
+      - SNOW_BLOCK
+      - SNOW
+  - xp: 2
+    blocks:
+      - SAND
+      - RED_SAND
+      - GRAVEL
+  - xp: 3
+    blocks:
+      - CLAY
+      - SOUL_SAND
+      - SOUL_SOIL
+      - PODZOL
+      - MYCELIUM
+
+combat-xp:            # Combat XP for each Entity, XP fully customizable, can be used to balance the XP gain of each mob
+  - xp: 500
+    entities:
+      - ENDER_DRAGON
+  - xp: 250
+    entities:
+      - WARDEN
+  - xp: 100
+    entities:
+      - WITHER
+  - xp: 50
+    entities:
+      - ELDER_GUARDIAN
+  - xp: 10
+    entities:
+      - IRON_GOLEM
+      - PLAYER
+  - xp: 8
+    entities:
+      - PIGLIN_BRUTE
+  - xp: 6
+    entities:
+      - EVOKER
+      - ILLUSIONER
+      - GHAST
+      - RAVAGER
+      - VEX
+      - WITHER_SKELETON
+      - SHULKER
+  - xp: 5
+    entities:
+      - ENDERMITE
+      - VINDICATOR
+      - GUARDIAN
+      - ENDERMAN
+      - HOGLIN
+  - xp: 4
+    entities:
+      - PILLAGER
+      - WITCH
+      - MAGMA_CUBE
+      - BLAZE
+  - xp: 3
+    entities:
+      - SPIDER
+      - CAVE_SPIDER
+      - SLIME
+      - SILVERFISH
+      - PHANTOM
+      - ZOGLIN
+  - xp: 2
+    entities:
+      - SKELETON
+      - CREEPER
+      - ZOMBIFIED_PIGLIN
+      - PIGLIN
+      - ZOMBIE_VILLAGER
+      - POLAR_BEAR
+      - SNOW_GOLEM
+  - xp: 1
+    entities:
+      - ZOMBIE
+      - HUSK
+      - STRAY
+      - DROWNED
+      - WOLF
+      - BEE
+
+skills:               # List of Skills
+  combat: RED
+  mining: BLUE
+  farming: GREEN
+  woodcutting: MAROON
+  excavation: GRAY
+abilities:            # List of Abilities for each Skill, can be used to unlock Abilities at specific Levels. Put -1 to deactivate the ability
+  skills:
+    mining:
+      veinminer: 100 #lvl
+      oresight: 200 #lvl
+    woodcutting:
+      woodchopper: 100 #lvl
+    excavation:
+      sedimentminer: 100 #lvl
+      treasure_finder: 100 #lvl
+      archaeologist: 200 #lvl
+
+combat:
+  tiers:         #Mob Tiers to determine the Chance for a Spawn Egg to Drop
+    tier1:              #Chance of tier 1 mob egg to drop: 0.5%
+      - BAT
+      - CHICKEN
+      - COW
+      - PIG
+      - SHEEP
+      - RABBIT
+      - SQUID
+      - GLOW_SQUID
+      - COD
+      - SALMON
+      - TROPICAL_FISH
+      - PUFFERFISH
+      - MOOSHROOM
+      - HORSE
+      - DONKEY
+      - MULE
+      - LLAMA
+      - TRADER_LLAMA
+      - CAT
+      - PARROT
+      - FOX
+      - FROG
+      - TADPOLE
+      - STRIDER
+      - SNIFFER
+      - ARMADILLO
+      - CAMEL
+      - GOAT
+      - PANDA
+      - TURTLE
+      - DOLPHIN
+      - AXOLOTL
+      - BEE
+      - OCELOT
+      - WOLF
+    tier2:              #Chance of tier 2 mob egg to drop: 0.25%
+      - VILLAGER
+      - WANDERING_TRADER
+      - PIGLIN
+      - IRON_GOLEM
+      - SNOW_GOLEM
+      - ALLAY
+      - PHANTOM
+      - POLAR_BEAR
+    tier3:              #Chance of tier 3 mob egg to drop: 0.125%
+      - ZOMBIE
+      - HUSK
+      - ZOMBIE_VILLAGER
+      - DROWNED
+      - SKELETON
+      - STRAY
+      - SPIDER
+      - CAVE_SPIDER
+      - CREEPER
+      - SLIME
+      - MAGMA_CUBE
+      - ENDERMAN
+      - SILVERFISH
+      - ENDERMITE
+      - HOGLIN
+      - ZOGLIN
+      - PILLAGER
+      - VINDICATOR
+      - PIGLIN_BRUTE
+    tier4:              #Chance of tier 4 mob egg to drop: 0.06125%
+      - BLAZE
+      - WITHER_SKELETON
+      - GUARDIAN
+      - ELDER_GUARDIAN
+      - SHULKER
+      - EVOKER
+      - VEX
+      - RAVAGER
+      - WITCH
+      - GHAST
+
+
+excavation:
+  treasure_finder:    # Chance for which rarity to drop in %, can be used to balance the Treasure Finder ability
+    common: 85
+    uncommon: 12
+    rare: 2.5
+    epic: 0.4
+    legendary: 0.1
+    drops:           # Customizeable list of droppable items
+      common:
+        - CLAY_BALL
+        - FLINT
+        - STICK
+        - BONE
+        - ROTTEN_FLESH
+        - STRING
+        - LEATHER
+        - COAL
+        - RAW_IRON
+        - RAW_COPPER
+        - RAW_GOLD
+        - IRON_NUGGET
+        - GOLD_NUGGET
+        - PAPER
+      uncommon:
+        - IRON_INGOT
+        - COPPER_INGOT
+        - GOLD_INGOT
+        - LAPIS_LAZULI
+        - EMERALD
+        - EXPERIENCE_BOTTLE
+        - MAP
+        - BOOK
+        - COMPASS
+        - CLOCK
+        - CHAINMAIL_HELMET
+        - CHAINMAIL_BOOTS
+        - IRON_SHOVEL
+        - IRON_PICKAXE
+        - SADDLE
+        - LEAD
+        - GOLDEN_HORSE_ARMOR
+        - MUSIC_DISC_CAT
+        - MUSIC_DISC_13
+        - BRICK
+      rare:
+        - ENCHANTED_BOOK
+        - DIAMOND
+        - GOLDEN_APPLE
+        - HEART_OF_THE_SEA
+        - NAUTILUS_SHELL
+        - MUSIC_DISC_BLOCKS
+        - MUSIC_DISC_STAL
+        - BELL
+        - TOTEM_OF_UNDYING
+        - ANCIENT_DEBRIS
+      epic:
+        - NETHERITE_SCRAP
+        - ENCHANTED_GOLDEN_APPLE
+        - NETHERITE_UPGRADE_SMITHING_TEMPLATE
+        - TRIDENT
+        - ARMOR_TRIM_SMITHING_TEMPLATE
+        - TOTEM_OF_UNDYING
+      legendary:
+        - ELYTRA
+        - NETHER_STAR
+        - MACE
+        - DRAGON_EGG
+        - WITHER_SKELETON_SKULL
+        - ENCHANTED_GOLDEN_APPLE
+        - DIAMOND_CHESTPLATE
+        - NETHERITE_PICKAXE
+        - NETHERITE_AXE
+        - LODESTONE
+
+  archaeologist:     # higher chance for better rarities than Treasure Finder, but epic/legendary still rare
+    common: 55
+    uncommon: 30
+    rare: 10
+    epic: 3.5
+    legendary: 1.5
+    drops:           # Customizeable list of droppable items
+      common:
+        - POTTERY_SHERD
+        - BRICK
+        - TERRACOTTA
+        - QUARTZ
+        - AMETHYST_SHARD
+        - COPPER_INGOT
+        - GOLD_INGOT
+        - LAPIS_LAZULI
+        - EMERALD
+        - BONE_BLOCK
+        - PRISMARINE_SHARD
+        - PRISMARINE_CRYSTALS
+        - ECHO_SHARD
+        - SUSPICIOUS_GRAVEL
+        - SUSPICIOUS_SAND
+      uncommon:
+        - ENCHANTED_BOOK
+        - EXPERIENCE_BOTTLE
+        - OBSIDIAN
+        - CRYING_OBSIDIAN
+        - END_STONE
+        - GILDED_BLACKSTONE
+        - ENDER_PEARL
+        - EYE_OF_ENDER
+        - RARE_POTTERY_SHERD
+        - GOLDEN_APPLE
+        - MUSIC_DISC_FRAGMENT_5
+        - TOTEM_OF_UNDYING
+        - ARMOR_TRIM_SMITHING_TEMPLATE
+        - BRUSH
+      rare:
+        - MACE_HEAD
+        - NETHERITE_SCRAP
+        - ANCIENT_DEBRIS
+        - NETHERITE_UPGRADE_SMITHING_TEMPLATE
+        - TOTEM_OF_UNDYING
+        - LODESTONE
+        - ECHO_SHARD
+        - ENCHANTED_BOOK
+        - TRIDENT
+        - ENDER_CHEST
+        - SCULK_CATALYST
+        - WITHER_SKELETON_SKULL
+      epic:
+        - ENCHANTED_GOLDEN_APPLE
+        - NETHER_STAR
+        - DIAMOND_CHESTPLATE
+        - NETHERITE_AXE
+        - NETHERITE_SHOVEL
+        - NETHERITE_PICKAXE
+        - DRAGON_BREATH
+        - TOTEM_OF_UNDYING
+        - ELYTRA
+      legendary:
+        - MACE
+        - DRAGON_EGG
+        - NETHER_STAR
+        - NETHERITE_SCRAP
+        - ECHO_SHARD
+        - SCULK_CATALYST
+        - ENCHANTED_GOLDEN_APPLE
+        - MACE_HEAD
+        - ENDER_CHEST
+        - ANCIENT_DEBRIS

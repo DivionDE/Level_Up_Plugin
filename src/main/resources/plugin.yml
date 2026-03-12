@@ -1,0 +1,27 @@
+name: LevelUp
+main: com.github.DivionMagKekse.Main_LevelUp
+version: 1.0
+api-version: 1.21
+author: Deubling
+description: A simple level plugin
+
+commands:
+  set_level:
+    description: Sets level for a specific skill
+    usage: /set_level <player> <skill> <level>
+    permission: Main_LevelUp.Admin
+
+  leaderboard:
+    description: Gives a list of the top players for a specific skill
+    usage: /leaderboard <skill>
+
+  abilities:
+    description: Enable or disable abilities from certain skill groups
+    usage: /abilities <ability> <enable|disable> || /abilities <ls/list>
+  skills:
+    description: List all Skills with their current Level. Works only for only players. Can show your own level, or the level of other players.
+
+permissions:
+  Main_LevelUp.Admin:
+    description: Allows use of admin commands
+    default: op
