@@ -50,7 +50,7 @@ public class Progress_Bar {
 
         if(content != null){
             icon = Component.text(content)
-                .font(Key.key("levelup:default"));
+                .font(Key.key("minecraft:default"));
         }
 
 
@@ -143,14 +143,14 @@ public class Progress_Bar {
             TextColor segment_color = TextColor.color(color.getRGB());
             if(i == 0){
                 segment_content = "\uE001";
-            }else if(i == segments){
+            }else if(i == segments-1){
                 segment_content = "\uE004";    
-            }if (i < filled) {
+            }if (i > filled) {
                 segment_color = TextColor.color(Color.WHITE.getRGB());
             }
-            bar = bar.append(Component.text(segment_content).font(Key.key("levelup:default")).color(segment_color));
+            bar = bar.append(Component.text(segment_content).font(Key.key("minecraft:default")).color(segment_color));
             if(segment_content.equals("\uE001") || segment_content.equals("\uE002")){
-                bar = bar.append(Component.text("\uE003").font(Key.key("levelup:default"))
+                bar = bar.append(Component.text("\uE003").font(Key.key("minecraft:default"))
                          .color(TextColor.color(color.getRGB())));
             }
         }
