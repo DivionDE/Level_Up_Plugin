@@ -74,7 +74,7 @@ public class Main_LevelUp extends JavaPlugin{
 
 	private Data data = new Data(this);
 	private static final ResourcePackInfo PACK_INFO = ResourcePackInfo.resourcePackInfo().uri(URI.create(
-												"https://github.com/DivionDE/Level_Up_Plugin/raw/refs/heads/main/LevelUp/src/main/resources/Level_Up_Texture_Pack.zip"))
+												"https://github.com/DivionDE/Level_Up_Plugin/raw/refs/heads/master/src/main/resourcepack/Level_Up_Texture_Pack.zip"))
 												.hash("04881ca49769c0f716e5fe1a8b58c5097f85257a").build();
     
 	public void onEnable(){
@@ -110,7 +110,6 @@ public class Main_LevelUp extends JavaPlugin{
 		data.dataSetup();
 		xpCalculation();
 		addAbilityAllUser();
-		saveResource("Level_Up_Texture_Pack.zip", true);	
 		
 		for(Player player : Bukkit.getOnlinePlayers()){	
 			sendOptionalResourcePack(player);
