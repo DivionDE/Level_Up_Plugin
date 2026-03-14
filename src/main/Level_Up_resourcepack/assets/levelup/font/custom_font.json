@@ -3,28 +3,28 @@
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_first_segment.png",
-      "ascent": 8,
+      "ascent": -2,
       "height": 12,
       "chars": ["\uE001"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_middle_segment.png",
-      "ascent": 8,
+      "ascent": -2,
       "height": 12,
       "chars": ["\uE002"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_divide_segment.png",
-      "ascent": 8,
+      "ascent": -2,
       "height": 12,
       "chars": ["\uE003"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_end_segment.png",
-      "ascent": 8,
+      "ascent": -2,
       "height": 12,
       "chars": ["\uE004"]
     },
@@ -62,6 +62,38 @@
       "ascent": 8,
       "height": 12,
       "chars": ["\uE009"]
+    },
+    {   
+      "type": "space",
+      "advances": {
+        "\uF000": 0
+      }
+    },
+    {   
+      "type": "space",
+      "advances": {
+        "\uF999": -1,
+        "\uF998": -2,
+        "\uF996": -4,
+        "\uF992": -8,
+        "\uF984": -16,
+        "\uF968": -32,
+        "\uF936": -64,
+        "\uF872": -128
+      }
+    },
+    {   
+      "type": "space",
+      "advances": {
+        "\uF001": 1,
+        "\uF002": 2,
+        "\uF004": 4,
+        "\uF008": 8,
+        "\uF016": 16,
+        "\uF032": 32,
+        "\uF064": 64,
+        "\uF128": 128
+      }
     }
   ]
 }
