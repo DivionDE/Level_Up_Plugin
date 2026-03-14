@@ -86,7 +86,10 @@ public class Progress_Bar {
                 }
             }
         }
-        negativeSpace = getNegativeSpace(pixeltext);
+
+        Component progressBar = createProgressBar(progress, barColor, customFont);
+
+        int halfTextWidth = pixeltext / 2;
 
         
         Component icon = iconChar != null 
@@ -96,14 +99,35 @@ public class Progress_Bar {
         Component skillText = Component.text(text)
             .font(Key.key("minecraft:default"));
 
-        Component progressBar = createProgressBar(progress, barColor, customFont);
+        // 1. Gesamtbreite der Bar (20 Segmente à 6px = 120px)
+int barWidth = 120;
+int halfBarWidth = barWidth / 2;
 
-        Component barTitle = Component.text()
-            .append(icon)
-            .append(skillText)
-            .append(Component.text(negativeSpace).font(customFont))
-            .append(progressBar) 
-            .build();
+// 2. Halbe Breite des Textes (inkl. Icon-Offset aus deinem Switch-Case)
+
+// 3. Den Text zentrieren:
+// Wir gehen um (halbe Textbreite) nach links, setzen das Icon + Text, 
+// und gehen wieder um (halbe Textbreite) nach rechts für die Engine.
+Component centeredText = Component.text()
+    .append(Component.text(getNegativeSpace(halfTextWidth)).font(customFont))
+    .append(icon)
+    .append(skillText)
+    .append(Component.text(getNegativeSpace(halfTextWidth)).font(customFont))
+    .build();
+
+// 4. Die Bar zentrieren:
+Component centeredBar = Component.text()
+    .append(Component.text(getNegativeSpace(halfBarWidth)).font(customFont))
+    .append(progressBar)
+    .append(Component.text(getNegativeSpace(halfBarWidth)).font(customFont))
+    .build();
+
+// 5. Zusammenfügen
+Component barTitle = Component.text()
+    .append(centeredText)
+    .append(centeredBar)
+    .build();
+
                                                                         
 
 
