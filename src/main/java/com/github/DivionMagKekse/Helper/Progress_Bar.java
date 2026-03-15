@@ -24,6 +24,8 @@ public class Progress_Bar {
     private static final int SEGMENTS = 20;
     private static final int SEGMENT_WIDTH = 6;
 
+    private static Key customFont = Key.key("levelup", "custom_font");
+
     public static void showXPBar(Main_LevelUp main, UUID playerID, double currentXP, double neededXP, String skillName) {
 
         Player player = Bukkit.getPlayer(playerID);
@@ -35,8 +37,6 @@ public class Progress_Bar {
 
         int level = main.getMyData().getPlayerLevel(playerID, skillName);
         float progress = (float) Math.min(currentXP / neededXP, 1.0);
-
-        Key customFont = Key.key("levelup", "custom_font");
 
         String iconChar = getSkillIcon(skillName);
 
@@ -156,7 +156,7 @@ public class Progress_Bar {
 
             while (remaining >= value) {
 
-                space = space.append(Component.text(map.get(value)));
+                space = space.append(Component.text(map.get(value)).font(customFont));
                 remaining -= value;
             }
         }

@@ -3,28 +3,28 @@
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_first_segment.png",
-      "ascent": 5,
+      "ascent": -2,
       "height": 7,
       "chars": ["\uE001"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_middle_segment.png",
-      "ascent": 5,
+      "ascent": -2,
       "height": 7,
       "chars": ["\uE002"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_divide_segment.png",
-      "ascent": 6,
+      "ascent": -2,
       "height": 7,
       "chars": ["\uE003"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/bossbar_end_segment.png",
-      "ascent": 6,
+      "ascent": -2,
       "height": 7,
       "chars": ["\uE004"]
     },
