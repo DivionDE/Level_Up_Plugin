@@ -31,6 +31,10 @@ public class Data {
 
     Main_LevelUp main;
 
+    ArrayList<Double> neededXP = new ArrayList<>();
+    final private double baseXP = 100.0;
+    private double growthFactor = 1.0075;
+
     public Data(Main_LevelUp main) {
         this.main = main;
         
@@ -81,8 +85,34 @@ public class Data {
         if(placedData.get("Levels.playerPlaced") != null){ 
             placedData.set("playerPlaced", placedData.getList("Levels.playerPlaced"));
         }
+
+        xpCalculation();
         saveData();
     }
+
+    public double getNeededXP(int level) {
+		if(level-1>2675) {
+			return 200004.5;
+		}
+	    return neededXP.get(level-1); 
+	}
+
+    private void xpCalculation() {
+		Bukkit.getScheduler().runTaskAsynchronously(main, ()->{
+		double xp = baseXP;
+		for (int level = 1; xp < 200000; level++) {
+			if((level-500)%100 == 0 && level > 500){
+				growthFactor -= 0.001;
+				growthFactor = Math.max(growthFactor, 1.0005);
+			}
+			if (level > 1) {
+				xp = xp * growthFactor;
+			}
+			neededXP.add(xp);
+		}
+		});
+    }
+    
 
     public int getPlayerLevel(UUID player, String skill) {
     	return data.getInt("Levels." + player + "." + skill.toLowerCase() + ".level");
@@ -92,7 +122,7 @@ public class Data {
     	return data.getDouble("Levels." + player + "." + skill.toLowerCase() + ".prestige_level");
     }
 
-    public double getCurrentXP(UUID player, String skill) {
+    public double getCurrentXP(String skill, UUID player) {
     	return data.getDouble("Levels." + player + "." + skill.toLowerCase() + ".xp");
     }
 
@@ -113,10 +143,10 @@ public class Data {
 				player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 			}
 			data.set("Levels." + playerID + "." + skill + ".xp", currentXP);
-			neededXP = main.getNeededXP(getPlayerLevel(playerID, skill));
+			neededXP = getNeededXP(getPlayerLevel(playerID, skill));
 			i++;
 		}
-		Progress_Bar.showXPBar(main, playerID, currentXP, neededXP, skill);
+		Progress_Bar.showXpBar(main, skill, playerID);
 		data.set("Levels." + playerID + "." + skill + ".xp", currentXP);
 	}
 

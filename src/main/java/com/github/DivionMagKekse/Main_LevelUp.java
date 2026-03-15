@@ -60,9 +60,6 @@ import net.md_5.bungee.api.ChatColor;
 
 
 public class Main_LevelUp extends JavaPlugin{
-	final private double baseXP = 100.0;
-    private double growthFactor = 1.0075;
-    ArrayList<Double> neededXP = new ArrayList<>();
     
     public Map<UUID, BukkitTask> oreSightTasks = new HashMap<>();
     public Map<UUID, Map<String, Boolean>> abilities_user = new HashMap<>();
@@ -75,7 +72,7 @@ public class Main_LevelUp extends JavaPlugin{
 	private Data data = new Data(this);
 	private static final ResourcePackInfo PACK_INFO = ResourcePackInfo.resourcePackInfo().uri(URI.create(
 												"https://github.com/DivionDE/Level_Up_Plugin/raw/refs/heads/master/src/main/Level_Up_resourcepack/Level_Up_Texture_Pack.zip"))
-												.hash("cc4518f6e0f4ca2ce4f842aecae06ea892999326").build();
+												.hash("2f493ede85319c6a3e1a96395ed9cfda0061e3e5").build();
     
 	public void onEnable(){
 		
@@ -108,7 +105,6 @@ public class Main_LevelUp extends JavaPlugin{
 
 		config.configFileSetup();
 		data.dataSetup();
-		xpCalculation();
 		addAbilityAllUser();
 		
 		for(Player player : Bukkit.getOnlinePlayers()){	
@@ -150,28 +146,8 @@ public class Main_LevelUp extends JavaPlugin{
 		return data;
 	}
     
-    private void xpCalculation() {
-		Bukkit.getScheduler().runTaskAsynchronously(this, ()->{
-		double xp = baseXP;
-		for (int level = 1; xp < 200000; level++) {
-			if((level-500)%100 == 0 && level > 500){
-				growthFactor -= 0.001;
-				growthFactor = Math.max(growthFactor, 1.0005);
-			}
-			if (level > 1) {
-				xp = xp * growthFactor;
-			}
-			neededXP.add(xp);
-		}
-		});
-    }
     
-	public double getNeededXP(int level) {
-		if(level-1>2675) {
-			return 200004.5;
-		}
-	    return neededXP.get(level-1); 
-	}
+	
 
 	public Collection<ItemStack> getExtraItemDrop(@NotNull String skill, @NotNull UUID playerID, @NotNull Collection <ItemStack> current_drops, Location loc){
 		skill = skill.toLowerCase();
@@ -280,34 +256,34 @@ public class Main_LevelUp extends JavaPlugin{
 
 		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
 			for (int ax = -1; ax <= 1; ax++) {
-              	for (int ay = 0; ay <= 1; ay++) {
-                  	for (int az = -1; az <= 1; az++) {
+				for (int ay = 0; ay <= 1; ay++) {
+					for (int az = -1; az <= 1; az++) {
                        	if (ax == 0 && ay == 0 && az == 0) continue;  // Skip self
-                         	taskCount[0]++;
-               	            final int x = ax, y = ay, z = az;
-                   	        Bukkit.getScheduler().runTask(this, () -> {
-                   	        Block current = world.getBlockAt(loc.clone().add(x, y, z));
-                           	    if (current.getType().equals(blockType) && visited.get(playerID).add(current)) {  // add() returns true if added
-                               	    drops.addAll(getExtraItemDrop(skill, playerID, current_drops, current.getLocation()));
-									xpProcess(skill, playerID,  current.getType());
-               	                    nothingNew[0] = false;
-                   	            }
-                       	        taskCount[0]--;
-                           	    if (taskCount[0] == 0 && nothingNew[0]) {
-                                    visited.remove(playerID);
-                   	            }
-                       	    });
-           	           	}
-            	    }
+							taskCount[0]++;
+							final int x = ax, y = ay, z = az;
+							Bukkit.getScheduler().runTask(this, () -> {
+							Block current = world.getBlockAt(loc.clone().add(x, y, z));
+                           	if (current.getType().equals(blockType) && visited.get(playerID).add(current)) {  // add() returns true if added
+								drops.addAll(getExtraItemDrop(skill, playerID, current_drops, current.getLocation()));
+								xpProcess(skill, playerID,  current.getType());
+								nothingNew[0] = false;
+							}
+							taskCount[0]--;
+							if (taskCount[0] == 0 && nothingNew[0]) {
+                                visited.remove(playerID);
+							}
+						});
+					}
 				}
-			});
+			}
+		});
         return drops;
 	}
 	
 	public void xpProcess(String skill, UUID playerID, Object object) {
 		
 	    skill = skill.toLowerCase();
-		double currentXP = data.getCurrentXP(playerID, skill);
+		double currentXP = data.getCurrentXP(skill, playerID);
 	    int level = data.getPlayerLevel(playerID, skill);
 	    double objectxp = 0;
 		if(object instanceof Material blockType){
@@ -318,7 +294,7 @@ public class Main_LevelUp extends JavaPlugin{
 			return;
 		}
 	    currentXP += objectxp;
-	    double neededXP = getNeededXP(level);
+	    double neededXP = data.getNeededXP(level);
 	    data.saveXP(skill, currentXP, neededXP, playerID);	  
 	}
 

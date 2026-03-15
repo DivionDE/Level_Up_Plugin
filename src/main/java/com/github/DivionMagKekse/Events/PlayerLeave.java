@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.github.DivionMagKekse.Main_LevelUp;
+import com.github.DivionMagKekse.Helper.Progress_Bar;
 
 
 
@@ -21,5 +22,6 @@ public class PlayerLeave implements Listener{
 		UUID playerID = event.getPlayer().getUniqueId();
 		main.removeAbilityUser(playerID);
 		main.stopOreSight(playerID);
+		Progress_Bar.removePlayerBar(playerID);
 	}
 }

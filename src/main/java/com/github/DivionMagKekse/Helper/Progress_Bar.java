@@ -2,6 +2,7 @@ package com.github.DivionMagKekse.Helper;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,111 +19,142 @@ import net.kyori.adventure.text.format.TextColor;
 
 public class Progress_Bar {
 
-    private static final Map<UUID, BossBar> activeBars = new HashMap<>();
+    private static final int segments = 20;
+    private static final int segmentWidth = 6;
+    private static final int barWidth = segmentWidth*segments;
+    private static final int iconHeight = 12;
+    private static final int trueIconHeight = 24;
+
+    private static final Map<UUID, BossBar> activeBars = new HashMap<>(); 
     private static final Map<UUID, BukkitTask> removalTasks = new HashMap<>();
 
-    private static final int SEGMENTS = 20;
-    private static final int SEGMENT_WIDTH = 6;
+    private static final Map<Integer, List<Character>> charWidths = Map.of( 
+        1, List.of('i', '!', '|', ';', ':', ',', '.', '\''), 
+        2, List.of('l', '[', ']'), 
+        3, List.of('t', 'I', '(', ')', '{', '}', '<', '>'), 
+        4, List.of('f', 'k', '"', '*', ' '), 
+        5, List.of( 'a', 'b', 'c', 'd', 'e', 'g', 'h', 'j', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '#', '$', '%', '&', '?', '@', '+', '=', '/', '\\', '_', '^', '~', '-' ) );
 
-    private static Key customFont = Key.key("levelup", "custom_font");
+    private static final Map<String, Integer> trueIconWidth = Map.of("combat", 30, "excavation", 26, "farming", 28, "mining", 26, "woodchopping", 24);
 
-    public static void showXPBar(Main_LevelUp main, UUID playerID, double currentXP, double neededXP, String skillName) {
+    private static final Key key = Key.key("levelup", "custom_font");
 
-        Player player = Bukkit.getPlayer(playerID);
-        if (player == null) return;
+    private static final List<String> barComponent = List.of(
+        "\uE001", "\uE002", "\uE003", "\uE004" 
+    );
 
-        Color barColor = main.getMyConfig().getSkillColor(skillName);
+    public static void showXpBar(Main_LevelUp main, String skill, UUID playerID){
+        skill = skill.toLowerCase();
+        int level = main.getMyData().getPlayerLevel(playerID, skill);
+        double currentXP = main.getMyData().getCurrentXP(skill, playerID);
+        double neededXP = main.getMyData().getNeededXP(level);
+        float progress = (float) (currentXP/neededXP);
+        Color barColor = main.getMyConfig().getSkillColor(skill);
 
-        skillName = skillName.substring(0, 1).toUpperCase() + skillName.substring(1).toLowerCase();
+        String barText = (skill.substring(0, 0).toUpperCase() + skill.substring(1) + " " + level);
 
-        int level = main.getMyData().getPlayerLevel(playerID, skillName);
-        float progress = (float) Math.min(currentXP / neededXP, 1.0);
-
-        String iconChar = getSkillIcon(skillName);
-
-        String text = skillName + " Level: " + level + " " +
-                String.format("%.1f / %.1f XP", currentXP, neededXP);
-
-        Component bossbarComponent = buildBossbar(iconChar, text, progress, barColor, customFont);
-
-        BossBar bar;
-
-        if (activeBars.containsKey(playerID)) {
-
-            bar = activeBars.get(playerID);
-            bar.name(bossbarComponent);
-
-        } else {
-
-            bar = BossBar.bossBar(
-                    bossbarComponent,
-                    0,
-                    BossBar.Color.WHITE,
-                    BossBar.Overlay.PROGRESS
-            );
-
-            bar.addViewer(player);
-            activeBars.put(playerID, bar);
+        String iconChar = getSkillIcon(skill);
+        Component icon = Component.text("");
+        if(iconChar != null){
+            icon.append(Component.text(iconChar).font(key));
         }
 
-        if (removalTasks.containsKey(playerID)) {
-            removalTasks.get(playerID).cancel();
+        Component text = Component.text(barText);
+
+        int xpBarSpace = -barWidth/2;
+        int textSpace = -(getIconWidth(skill)+getTextWidth(barText))/2;
+
+        Component xpBar = Component.text("\uF000").font(key)
+            .append(getPixelSpace(xpBarSpace))
+            .append(createBarComponent(progress, barColor));
+
+        Component titleText = Component.text("\uF000").font(key)
+            .append(getPixelSpace(textSpace))
+            .append(icon)
+            .append(text);
+
+        Component progessBar = Component.text("").append(xpBar).append(titleText);
+
+        BossBar bossBar;
+        if (activeBars.containsKey(playerID)) { 
+            bossBar = activeBars.get(playerID); 
+            bossBar.name(progessBar); 
+        } else { 
+            bossBar = BossBar.bossBar( progessBar, 0, BossBar.Color.WHITE, BossBar.Overlay.PROGRESS ); 
+            bossBar.addViewer(Bukkit.getPlayer(playerID)); 
+            activeBars.put(playerID, bossBar); 
         }
-
-        BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> removePlayerBar(playerID), 60L);
-
-        removalTasks.put(playerID, task);
+        if (removalTasks.containsKey(playerID)) { 
+            removalTasks.get(playerID).cancel(); 
+        } 
+        BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> { 
+            BossBar barToRemove = activeBars.remove(playerID); 
+            if (barToRemove != null) { 
+                Player p = Bukkit.getPlayer(playerID); 
+                if (p != null) 
+                    barToRemove.removeViewer(p); 
+                } 
+                removalTasks.remove(playerID); 
+            }, 60L); 
+        removalTasks.put(playerID, task); 
     }
 
-    private static Component buildBossbar(String iconChar, String text, float progress, Color barColor, Key customFont) {
-
-        Component icon = Component.text(iconChar).font(customFont);
-
-        Component textComponent = Component.text(text)
-                .font(Key.key("minecraft:default"));
-
-        Component bar = createProgressBar(progress, barColor, customFont);
-
-        int barWidth = SEGMENTS * SEGMENT_WIDTH;
-
-        int textWidth = text.length() * 6 + 10;
-
-        int offset = (barWidth - textWidth) / 2;
-
-        return Component.text()
-                .append(pixelSpace(offset))
-                .append(icon)
-                .append(Component.space())
-                .append(textComponent)
-                .append(pixelSpace(-offset))
-                .append(bar)
-                .build();
-    }
-
-    private static Component createProgressBar(float progress, Color barColor, Key customFont) {
-
-        int filled = Math.round(progress * SEGMENTS);
-
+    private static Component createBarComponent(float progress, Color color){
+        int filled = Math.round(segments*progress);
         Component bar = Component.empty();
+        bar.color(TextColor.color(color.getRGB()));
+        for(int i = 0; i<segments; i++){
+            if(i >= filled){
+                color = Color.WHITE;
+            }
+            String append = barComponent.get(1);
 
-        for (int i = 0; i < SEGMENTS; i++) {
-
-            String segment = "\uE002";
-
-            if (i == 0) segment = "\uE001";
-            else if (i == SEGMENTS - 1) segment = "\uE004";
-
-            TextColor color = (i < filled)
-                    ? TextColor.color(barColor.getRGB())
-                    : TextColor.color(Color.WHITE.getRGB());
-
-            bar = bar.append(Component.text(segment).font(customFont).color(color));
+            if(i==0){
+                append = barComponent.get(0);
+            }
+            else if(i==segments-1){
+                append = barComponent.get(3);
+            }
+            bar = bar.append(Component.text(append).color(TextColor.color(color.getRGB())));
         }
-
         return bar;
     }
 
-    private static Component pixelSpace(int pixels) {
+    private static String getSkillIcon(String skill){
+        switch (skill.toLowerCase()) {
+            case "combat":
+                return "\uE005";
+
+            case "mining":
+                return "\uE006";
+
+            case "farming":
+                return "\uE007";
+
+            case "woodcutting":
+                return "\uE008";
+
+            case "excavation":
+                return "\uE009";
+        }
+        return "";
+    }
+
+    private static int getIconWidth(String skill){
+        return Math.round(trueIconWidth.get(skill)/(trueIconHeight/iconHeight));
+    }
+
+    private static int getTextWidth(String text){
+        int pixeltext = 0;
+        outer:
+        for(char current_char : text.toCharArray()){ 
+            for(int i = 5; i>=1; i--){ 
+                if(charWidths.get(i).contains(current_char)){ 
+                    pixeltext += i; continue outer; } } }
+        return pixeltext;
+    }
+
+    private static Component getPixelSpace(int pixels) {
 
         Component space = Component.empty();
 
@@ -148,7 +180,13 @@ public class Progress_Bar {
                 1, "\uF999"
         );
 
-        Map<Integer, String> map = pixels >= 0 ? positive : negative;
+        Map<Integer, String> map;
+
+        if(pixels >=0){
+            map = positive;
+        }else{
+            map = negative;
+        }
 
         int remaining = Math.abs(pixels);
 
@@ -156,49 +194,25 @@ public class Progress_Bar {
 
             while (remaining >= value) {
 
-                space = space.append(Component.text(map.get(value)).font(customFont));
+                space = space.append(Component.text(map.get(value)));
                 remaining -= value;
             }
         }
-
+        space = space.font(key);
         return space;
     }
 
-    private static String getSkillIcon(String skill) {
-
-        switch (skill.toLowerCase()) {
-
-            case "combat":
-                return "\uE005";
-
-            case "mining":
-                return "\uE006";
-
-            case "farming":
-                return "\uE007";
-
-            case "woodcutting":
-                return "\uE008";
-
-            case "excavation":
-                return "\uE009";
-        }
-
-        return "";
-    }
-
-    public static void removePlayerBar(UUID playerId) {
-
-        BukkitTask task = removalTasks.remove(playerId);
-        if (task != null) task.cancel();
-
-        BossBar bar = activeBars.remove(playerId);
-
-        if (bar != null) {
-
-            Player player = Bukkit.getPlayer(playerId);
-
-            if (player != null) bar.removeViewer(player);
-        }
+    public static void removePlayerBar(UUID playerId) { 
+        BukkitTask task = removalTasks.remove(playerId); 
+        if (task != null) { 
+            task.cancel(); 
+        } 
+        BossBar bar = activeBars.remove(playerId); 
+        if (bar != null) { 
+            Player player = Bukkit.getPlayer(playerId); 
+            if (player != null) { 
+                bar.removeViewer(player); 
+            } 
+        } 
     }
 }

@@ -192,8 +192,8 @@ public class Skills implements CommandExecutor, TabCompleter{
 			arg1 = arg1.substring(0, 1).toUpperCase() + arg1.substring(1).toLowerCase();
 			String message = "<aqua><b>" + player.getName() + " " + arg1 + "</b></aqua> level <red>" + level + "</red>";
 			if(arg2 != null && arg2.equalsIgnoreCase("xp")) {
-				double neededXP = main.getNeededXP(level);
-				double currentXP = data.getCurrentXP(playerID, arg1);
+				double neededXP = main.getMyData().getNeededXP(level);
+				double currentXP = data.getCurrentXP(arg1, playerID);
 				message += "<newline>Current xp <green>" + String.format("%.2f", currentXP) + "</green>" + "<newline>Needed xp <green>" + String.format("%.2f", neededXP) + "</green>";
 			}
 			playerAu.sendMessage(mm.deserialize(message));
@@ -277,8 +277,8 @@ public class Skills implements CommandExecutor, TabCompleter{
 	    sender.sendMessage("Level: " + level);
 
 	    if (arg3 != null && arg3.equalsIgnoreCase("xp")) {
-	        double neededXP = main.getNeededXP(level);
-	        double currentXP = data.getCurrentXP(playerID, skill);
+	        double neededXP = main.getMyData().getNeededXP(level);
+	        double currentXP = data.getCurrentXP(skill, playerID);
 
 	        sender.sendMessage("Current XP: " + currentXP);
 	        sender.sendMessage("Needed XP: " + neededXP);
