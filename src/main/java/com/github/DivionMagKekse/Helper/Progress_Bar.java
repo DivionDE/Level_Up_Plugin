@@ -20,7 +20,7 @@ import net.kyori.adventure.text.format.TextColor;
 public class Progress_Bar {
 
     private static final int segments = 20;
-    private static final int segmentWidth = 6;
+    private static final int segmentWidth = 12;
     private static final int barWidth = segmentWidth*segments;
     private static final int iconHeight = 12;
     private static final int trueIconHeight = 24;
@@ -51,15 +51,15 @@ public class Progress_Bar {
         float progress = (float) (currentXP/neededXP);
         Color barColor = main.getMyConfig().getSkillColor(skill);
 
-        String barText = (skill.substring(0, 0).toUpperCase() + skill.substring(1) + " " + level);
+        String barText = (skill.substring(0, 1).toUpperCase() + skill.substring(1) + " " + level);
 
         String iconChar = getSkillIcon(skill);
         Component icon = Component.text("");
         if(iconChar != null){
-            icon.append(Component.text(iconChar).font(key));
+            icon = icon.append(Component.text(iconChar).font(key));
         }
 
-        Component text = Component.text(barText);
+        Component text = Component.text(barText).font(Key.key("minecraft", "default"));
 
         int xpBarSpace = -barWidth/2;
         int textSpace = -(getIconWidth(skill)+getTextWidth(barText))/2;
@@ -73,21 +73,21 @@ public class Progress_Bar {
             .append(icon)
             .append(text);
 
-        Component progessBar = Component.text("").append(xpBar).append(titleText);
+        Component progressBar = Component.text("").append(xpBar).append(titleText);
 
         BossBar bossBar;
         if (activeBars.containsKey(playerID)) { 
             bossBar = activeBars.get(playerID); 
-            bossBar.name(progessBar); 
+            bossBar.name(progressBar); 
         } else { 
-            bossBar = BossBar.bossBar( progessBar, 0, BossBar.Color.WHITE, BossBar.Overlay.PROGRESS ); 
+            bossBar = BossBar.bossBar( progressBar, 0, BossBar.Color.WHITE, BossBar.Overlay.PROGRESS ); 
             bossBar.addViewer(Bukkit.getPlayer(playerID)); 
             activeBars.put(playerID, bossBar); 
         }
         if (removalTasks.containsKey(playerID)) { 
             removalTasks.get(playerID).cancel(); 
         } 
-        BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> { 
+        /*BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> { 
             BossBar barToRemove = activeBars.remove(playerID); 
             if (barToRemove != null) { 
                 Player p = Bukkit.getPlayer(playerID); 
@@ -96,13 +96,12 @@ public class Progress_Bar {
                 } 
                 removalTasks.remove(playerID); 
             }, 60L); 
-        removalTasks.put(playerID, task); 
+        removalTasks.put(playerID, task); */
     }
 
     private static Component createBarComponent(float progress, Color color){
         int filled = Math.round(segments*progress);
         Component bar = Component.empty();
-        bar.color(TextColor.color(color.getRGB()));
         for(int i = 0; i<segments; i++){
             if(i >= filled){
                 color = Color.WHITE;
@@ -141,7 +140,10 @@ public class Progress_Bar {
     }
 
     private static int getIconWidth(String skill){
-        return Math.round(trueIconWidth.get(skill)/(trueIconHeight/iconHeight));
+        if(trueIconWidth.containsKey(skill)){
+            return Math.round(trueIconWidth.get(skill)/(trueIconHeight/iconHeight));
+        }
+        return 0;
     }
 
     private static int getTextWidth(String text){
