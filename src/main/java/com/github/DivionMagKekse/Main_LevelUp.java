@@ -72,7 +72,7 @@ public class Main_LevelUp extends JavaPlugin{
 	private Data data = new Data(this);
 	private static final ResourcePackInfo PACK_INFO = ResourcePackInfo.resourcePackInfo().uri(URI.create(
 												"https://github.com/DivionDE/Level_Up_Plugin/raw/refs/heads/master/src/main/Level_Up_resourcepack/Level_Up_Texture_Pack.zip"))
-												.hash("70b5fbc27dc11e69786a2b8df030a45fd45651f9").build();
+												.hash("7ad29ee0a4c36b3f362863fe3dc322eb1a0aab18").build();
     
 	public void onEnable(){
 		
@@ -151,7 +151,6 @@ public class Main_LevelUp extends JavaPlugin{
 
 	public Collection<ItemStack> getExtraItemDrop(@NotNull String skill, @NotNull UUID playerID, @NotNull Collection <ItemStack> current_drops, Location loc){
 		skill = skill.toLowerCase();
-		Bukkit.getLogger().info("inside getExtraItemDrop" + current_drops);
 		List<ItemStack> drops = new ArrayList<>();
 		int level = data.getPlayerLevel(playerID, skill);
 		double chance = (double)level%1000/1000;
@@ -169,8 +168,6 @@ public class Main_LevelUp extends JavaPlugin{
 				loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK,loc.getX(), loc.getY()+1, loc.getZ(), 10, 0.5, 0.5, 0.5, 0.25);
 		}
 
-			Bukkit.getLogger().info("Current DroP:" + current_drop + "amount:" + amount);
-
 			for(int pos = 0; pos<drops.size(); pos++){
 				if(drops.get(pos).isSimilar(current_drop)){
 					ItemStack temp_drop = drops.get(pos).clone();
@@ -185,17 +182,13 @@ public class Main_LevelUp extends JavaPlugin{
 				}
 			}
 			if(added){
-				Bukkit.getLogger().info("Drops" + drops);
 				continue;
 			}
 			drops.add(current_drop.clone().add(current_drop.getAmount()*(amount-1)));	
 			if(more){
 				amount --;
-			}
-			Bukkit.getLogger().info("Drops" + drops);		
+			}		
 		}
-		Bukkit.getLogger().info("current_drops:" + current_drops + "drops:" + drops);
-		Bukkit.getLogger().info("end");
 
 		return drops;
 	}

@@ -21,7 +21,7 @@ public class Progress_Bar {
 
     private static final int segments = 20;
     private static final int segmentWidth = 12;
-    private static final int barWidth = segmentWidth*segments;
+    private static final int barWidth = segmentWidth*segments + 19*1;
     private static final int iconHeight = 12;
     private static final int trueIconHeight = 24;
 
@@ -51,7 +51,9 @@ public class Progress_Bar {
         float progress = (float) (currentXP/neededXP);
         Color barColor = main.getMyConfig().getSkillColor(skill);
 
-        String barText = (skill.substring(0, 1).toUpperCase() + skill.substring(1) + " " + level);
+        String barText = (skill.substring(0, 1).toUpperCase() + skill.substring(1) + 
+                            " level: " + level + " " + String.format("%.1f", currentXP) + 
+                            " / " + String.format("%.1f", neededXP));
 
         String iconChar = getSkillIcon(skill);
         Component icon = Component.text("");
@@ -66,12 +68,14 @@ public class Progress_Bar {
 
         Component xpBar = Component.text("\uF000").font(key)
             .append(getPixelSpace(xpBarSpace))
-            .append(createBarComponent(progress, barColor));
+            .append(createBarComponent(progress, barColor))
+            .append(getPixelSpace(xpBarSpace));
 
         Component titleText = Component.text("\uF000").font(key)
             .append(getPixelSpace(textSpace))
             .append(icon)
-            .append(text);
+            .append(text)
+            .append(getPixelSpace(textSpace));
 
         Component progressBar = Component.text("").append(xpBar).append(titleText);
 
@@ -87,7 +91,7 @@ public class Progress_Bar {
         if (removalTasks.containsKey(playerID)) { 
             removalTasks.get(playerID).cancel(); 
         } 
-        /*BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> { 
+        BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> { 
             BossBar barToRemove = activeBars.remove(playerID); 
             if (barToRemove != null) { 
                 Player p = Bukkit.getPlayer(playerID); 
@@ -96,7 +100,7 @@ public class Progress_Bar {
                 } 
                 removalTasks.remove(playerID); 
             }, 60L); 
-        removalTasks.put(playerID, task); */
+        removalTasks.put(playerID, task);
     }
 
     private static Component createBarComponent(float progress, Color color){
@@ -152,7 +156,12 @@ public class Progress_Bar {
         for(char current_char : text.toCharArray()){ 
             for(int i = 5; i>=1; i--){ 
                 if(charWidths.get(i).contains(current_char)){ 
-                    pixeltext += i; continue outer; } } }
+                    pixeltext += i + 1; 
+                    continue outer; 
+                } 
+            } 
+        }
+        pixeltext--;
         return pixeltext;
     }
 
@@ -192,7 +201,7 @@ public class Progress_Bar {
 
         int remaining = Math.abs(pixels);
 
-        for (int value : map.keySet()) {
+        for(int value : List.of(128,64,32,16,8,4,2,1)){
 
             while (remaining >= value) {
 
