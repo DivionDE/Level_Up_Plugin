@@ -51,7 +51,7 @@ public class Progress_Bar {
         float progress = (float) (currentXP/neededXP);
         Color barColor = main.getMyConfig().getSkillColor(skill);
 
-        String barText = (skill.substring(0, 1).toUpperCase() + skill.substring(1) + 
+        String barText = (" " + skill.substring(0, 1).toUpperCase() + skill.substring(1) + 
                             " level: " + level + " " + String.format("%.1f", currentXP) + 
                             " / " + String.format("%.1f", neededXP));
 
