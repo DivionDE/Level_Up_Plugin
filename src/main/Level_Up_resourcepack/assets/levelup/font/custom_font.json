@@ -31,35 +31,35 @@
     {
       "type": "bitmap",
       "file": "levelup:font/combat_icon.png",
-      "ascent": 12,
+      "ascent": 10,
       "height": 12,
       "chars": ["\uE005"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/mining_icon.png",
-      "ascent": 12,
+      "ascent": 10,
       "height": 12,
       "chars": ["\uE006"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/farming_icon.png",
-      "ascent": 12,
+      "ascent": 10,
       "height": 12,
       "chars": ["\uE007"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/woodcutting_icon.png",
-      "ascent": 12,
+      "ascent": 10,
       "height": 12,
       "chars": ["\uE008"]
     },
     {
       "type": "bitmap",
       "file": "levelup:font/excavation_icon.png",
-      "ascent": 12,
+      "ascent": 10,
       "height": 12,
       "chars": ["\uE009"]
     },
