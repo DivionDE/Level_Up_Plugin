@@ -19,21 +19,8 @@ import java.util.UUID;
 
 public class Progress_Bar {
 
-    private static final Map<UUID, BossBar> activeBars = new HashMap<>();
+    private static final Map<UUID, List<BossBar>> activeBars = new HashMap<>();
     private static final Map<UUID, BukkitTask> removalTasks = new HashMap<>();
-    private static final Map<Integer, List<Character>> charWidths = Map.of(
-    1, List.of('i', '!', '|', ';', ':', ',', '.', '\''),
-    2, List.of('l', '[', ']'),
-    3, List.of('t', 'I', '(', ')', '{', '}', '<', '>'),
-    4, List.of('f', 'k', '"', '*', ' '),
-    5, List.of(
-        'a', 'b', 'c', 'd', 'e', 'g', 'h', 'j', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        '#', '$', '%', '&', '?', '@', '+', '=', '/', '\\', '_', '^', '~', '-'
-    )
-    );
- 
 
     public static void showXPBar(Main_LevelUp main, UUID playerID, double currentXP, double neededXP, String skillName) {
         Player player = Bukkit.getPlayer(playerID);
@@ -52,45 +39,24 @@ public class Progress_Bar {
         // Icon-Glyph
         String iconChar = null;
         final String text = skillName + " Level: " + level + " " + String.format("%.1f / %.1f XP", currentXP, neededXP);
-        int pixeltext = 0;
-        String negativeSpace = "";
 
         switch (skillName.toLowerCase()) {
             case "combat" : 
                 iconChar = "\uE005";
-                pixeltext += 23;
                 break;
             case "mining" : 
                 iconChar = "\uE006";
-                pixeltext += 16;
                 break;
             case "farming" : 
                 iconChar = "\uE007";
-                pixeltext += 19;
                 break;
             case "woodcutting" : 
                 iconChar = "\uE008";
-                pixeltext += 19;
                 break;
             case "excavation" : 
                 iconChar = "\uE009";
-                pixeltext += 25;
                 break;
         }
-        outer:
-        for(char current_char : text.toCharArray()){
-            for(int i = 5; i>=1; i--){
-                if(charWidths.get(i).contains(current_char)){
-                    pixeltext += i;
-                    continue outer;
-                }
-            }
-        }
-
-        Component progressBar = createProgressBar(progress, barColor, customFont);
-
-        int halfTextWidth = pixeltext / 2;
-
         
         Component icon = iconChar != null 
             ? Component.text(iconChar).font(customFont) 
@@ -99,51 +65,39 @@ public class Progress_Bar {
         Component skillText = Component.text(text)
             .font(Key.key("minecraft:default"));
 
-        // 1. Gesamtbreite der Bar (20 Segmente à 6px = 120px)
-int barWidth = 120;
-int halfBarWidth = barWidth / 2;
+        Component centeredText = Component.text()
+            .append(icon)
+            .append(skillText)
+            .build();
 
-// 2. Halbe Breite des Textes (inkl. Icon-Offset aus deinem Switch-Case)
+        Component centeredBar = Component.text()
+            .append(createProgressBar(progress, barColor, customFont))
+            .build();
 
-// 3. Den Text zentrieren:
-// Wir gehen um (halbe Textbreite) nach links, setzen das Icon + Text, 
-// und gehen wieder um (halbe Textbreite) nach rechts für die Engine.
-Component centeredText = Component.text()
-    .append(Component.text(getNegativeSpace(halfTextWidth)).font(customFont))
-    .append(icon)
-    .append(skillText)
-    .append(Component.text(getNegativeSpace(halfTextWidth)).font(customFont))
-    .build();
-
-// 4. Die Bar zentrieren:
-Component centeredBar = Component.text()
-    .append(Component.text(getNegativeSpace(halfBarWidth)).font(customFont))
-    .append(progressBar)
-    .append(Component.text(getNegativeSpace(halfBarWidth)).font(customFont))
-    .build();
-
-// 5. Zusammenfügen
-Component barTitle = Component.text()
-    .append(centeredText)
-    .append(centeredBar)
-    .build();
-
-                                                                        
-
-
-        BossBar bossBar;
+        BossBar textBar;
+        BossBar progressBar;
         if (activeBars.containsKey(playerID)) {
-            bossBar = activeBars.get(playerID);
-            bossBar.name(barTitle);
+            textBar = activeBars.get(playerID).get(0);
+            progressBar = activeBars.get(playerID).get(1);
+            textBar.name(centeredText);
+            progressBar.name(centeredBar);
+
         } else {
-            bossBar = BossBar.bossBar(
-                barTitle,
+            textBar = BossBar.bossBar(
+                centeredText,
                 0,
                 BossBar.Color.WHITE,
                 BossBar.Overlay.PROGRESS
             );
-            bossBar.addViewer(player);
-            activeBars.put(playerID, bossBar);
+            progressBar = BossBar.bossBar(
+                centeredBar,
+                0,
+                BossBar.Color.WHITE,
+                BossBar.Overlay.PROGRESS
+            );
+            textBar.addViewer(player);
+            progressBar.addViewer(player);
+            activeBars.put(playerID, List.of(textBar, progressBar));
         }
 
         // alten Removal-Task abbrechen
@@ -152,10 +106,13 @@ Component barTitle = Component.text()
         }
 
         BukkitTask task = Bukkit.getScheduler().runTaskLater(main, () -> {
-            BossBar barToRemove = activeBars.remove(playerID);
-            if (barToRemove != null) {
-                Player p = Bukkit.getPlayer(playerID);
-                if (p != null) barToRemove.removeViewer(p);
+            List<BossBar> bossBars = activeBars.remove(playerID);
+            if (bossBars != null) {
+                for(BossBar bar : bossBars){
+                    Player p = Bukkit.getPlayer(playerID);
+                    if (p != null) bar.removeViewer(p);
+                }
+                
             }
             removalTasks.remove(playerID);
         }, 60L);
@@ -189,38 +146,19 @@ Component barTitle = Component.text()
         return bar;
     }
 
-    private static String getNegativeSpace(int amount) {
-    if (amount <= 0) return "";
-    StringBuilder sb = new StringBuilder();
-    int temp = amount;
-    
-    // Große Sprünge (falls vorhanden, z.B. -128)
-    while (temp >= 128) { sb.append("\uF872"); temp -= 128; }
-    
-    // Deine Switch-Logik für den Rest (angepasst auf einfache if-Kette für Performance)
-    if (temp >= 64) { sb.append("\uF936"); temp -= 64; }
-    if (temp >= 32) { sb.append("\uF968"); temp -= 32; }
-    if (temp >= 16) { sb.append("\uF984"); temp -= 16; }
-    if (temp >= 8)  { sb.append("\uF992"); temp -= 8; }
-    if (temp >= 4)  { sb.append("\uF996"); temp -= 4; }
-    if (temp >= 2)  { sb.append("\uF998"); temp -= 2; }
-    if (temp >= 1)  { sb.append("\uF999"); temp -= 1; }
-    
-    return sb.toString();
-}
-
-
     public static void removePlayerBar(UUID playerId) {
         BukkitTask task = removalTasks.remove(playerId);
         if (task != null) {
             task.cancel();
         }
 
-        BossBar bar = activeBars.remove(playerId);
-        if (bar != null) {
-            Player player = Bukkit.getPlayer(playerId);
-            if (player != null) {
-                bar.removeViewer(player);
+        List <BossBar> bars = activeBars.remove(playerId);
+        if (bars != null) {
+            for(BossBar bar : bars){
+                Player player = Bukkit.getPlayer(playerId);
+                if (player != null) {
+                    bar.removeViewer(player);
+                }
             }
         }
     }
