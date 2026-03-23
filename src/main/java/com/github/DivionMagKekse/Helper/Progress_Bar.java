@@ -46,14 +46,27 @@ public class Progress_Bar {
     public static void showXpBar(Main_LevelUp main, String skill, UUID playerID){
         skill = skill.toLowerCase();
         int level = main.getMyData().getPlayerLevel(playerID, skill);
-        double currentXP = main.getMyData().getCurrentXP(skill, playerID);
-        double neededXP = main.getMyData().getNeededXP(level);
+        double currentXP = Math.round(main.getMyData().getCurrentXP(skill, playerID));
+        double neededXP = Math.round(main.getMyData().getNeededXP(level));
         float progress = (float) (currentXP/neededXP);
         Color barColor = main.getMyConfig().getSkillColor(skill);
+        int text_width = 41;
+        switch(skill){
+            case "combat" -> text_width += 28;
+            case "excavation" -> text_width += 44;
+            case "farming" -> text_width += 30;
+            case "mining" -> text_width += 22;
+            case "woodchopping" -> text_width += 56;
+            default -> text_width += getTextWidth(skill);
+        }
+        text_width += getNumberWidth(level);
+
+        text_width += getNumberWidth(currentXP);
+        text_width += getNumberWidth(neededXP);
 
         String barText = (" " + skill.substring(0, 1).toUpperCase() + skill.substring(1) + 
-                            " level: " + level + " " + String.format("%.1f", currentXP) + 
-                            " / " + String.format("%.1f", neededXP));
+                            " level: " + level + " " + currentXP + 
+                            " / " + neededXP);
 
         String iconChar = getSkillIcon(skill);
         Component icon = Component.text("");
@@ -64,7 +77,7 @@ public class Progress_Bar {
         Component text = Component.text(barText).font(Key.key("minecraft", "default"));
 
         int xpBarSpace = -barWidth/2;
-        int textSpace = -(getIconWidth(skill)+getTextWidth(barText))/2;
+        int textSpace = -(getIconWidth(skill)+text_width)/2;
 
         Component xpBar = Component.text("\uF000").font(key)
             .append(getPixelSpace(xpBarSpace))
@@ -163,6 +176,20 @@ public class Progress_Bar {
         }
         pixeltext--;
         return pixeltext;
+    }
+
+    private static int getNumberWidth(double num){
+        num = Math.round(num);
+        int count = 0;
+        while(true){
+            if(num >= 1){
+                count++;
+                num /= 10;
+            }else{
+                break;
+            }
+        }
+        return count;
     }
 
     private static Component getPixelSpace(int pixels) {
