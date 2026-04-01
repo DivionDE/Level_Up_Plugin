@@ -72,7 +72,7 @@ public class Main_LevelUp extends JavaPlugin{
 	private Data data = new Data(this);
 	private static final ResourcePackInfo PACK_INFO = ResourcePackInfo.resourcePackInfo().uri(URI.create(
 												"https://github.com/DivionDE/Level_Up_Plugin/raw/refs/heads/master/src/main/Level_Up_resourcepack/Level_Up_Texture_Pack.zip"))
-												.hash("ad51a40e83bb3d50b72d7528706ffb85ae084cd0").build();
+												.hash("8db290c7ea15882b69490c8978c778880b2ad57b").build();
     
 	public void onEnable(){
 		

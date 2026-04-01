@@ -16,7 +16,7 @@
     },
     {
       "type": "bitmap",
-      "file": "levelup:textures/gui/bossbar/background.png",
+      "file": "levelup:gui/bossbar/background.png",
       "ascent": 0,
       "height": 15,
       "chars": ["\uE003"]
