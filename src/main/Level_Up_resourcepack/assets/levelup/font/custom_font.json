@@ -16,9 +16,9 @@
     },
     {
       "type": "bitmap",
-      "file": "levelup:font/bossbar_divide_segment.png",
+      "file": "levelup:gui/bossbar/background.png",
       "ascent": -4,
-      "height": 14,
+      "height": 5,
       "chars": ["\uE003"]
     },
     {

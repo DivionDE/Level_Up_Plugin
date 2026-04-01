@@ -22,6 +22,7 @@ public class Progress_Bar {
     private static final int segments = 20;
     private static final int segmentWidth = 12;
     private static final int barWidth = segmentWidth*segments + 19*1;
+    private static final int backgroundWidth = 182;
     private static final int iconHeight = 12;
     private static final int trueIconHeight = 24;
 
@@ -80,9 +81,13 @@ public class Progress_Bar {
         int textSpace = -(getIconWidth(skill)+text_width)/2;
 
         Component xpBar = Component.text("\uF000").font(key)
-            .append(getPixelSpace(xpBarSpace))
+            /* .append(getPixelSpace(xpBarSpace))
             .append(createBarComponent(progress, barColor))
-            .append(getPixelSpace(xpBarSpace));
+            .append(getPixelSpace(xpBarSpace))*/
+            .append(getPixelSpace(-backgroundWidth/2))
+            .append(Component.text(barComponent.get(2)).color(TextColor.color(barColor.getRGB())))
+            .append(getPixelSpace(-backgroundWidth/2))
+            ;
 
         Component titleText = Component.text("\uF000").font(key)
             .append(getPixelSpace(textSpace))
