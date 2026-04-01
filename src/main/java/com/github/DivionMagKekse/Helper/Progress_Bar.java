@@ -22,7 +22,7 @@ public class Progress_Bar {
     private static final int segments = 20;
     private static final int segmentWidth = 12;
     private static final int barWidth = segmentWidth*segments + 19*1;
-    private static final int backgroundWidth = 182;
+    private static final int backgroundWidth = 182*3;
     private static final int iconHeight = 12;
     private static final int trueIconHeight = 24;
 
@@ -72,10 +72,10 @@ public class Progress_Bar {
         String iconChar = getSkillIcon(skill);
         Component icon = Component.text("");
         if(iconChar != null){
-            icon = icon.append(Component.text(iconChar).font(key));
+            icon = icon.append(Component.text(iconChar).font(key).color(TextColor.color(barColor.getRGB())));
         }
 
-        Component text = Component.text(barText).font(Key.key("minecraft", "default"));
+        Component text = Component.text(barText).font(Key.key("minecraft", "default")).color(TextColor.color(barColor.getRGB()));
 
         int xpBarSpace = -barWidth/2;
         int textSpace = -(getIconWidth(skill)+text_width)/2;
@@ -84,9 +84,9 @@ public class Progress_Bar {
             /* .append(getPixelSpace(xpBarSpace))
             .append(createBarComponent(progress, barColor))
             .append(getPixelSpace(xpBarSpace))*/
-            .append(getPixelSpace(-backgroundWidth/2))
-            .append(Component.text(barComponent.get(2)).color(TextColor.color(barColor.getRGB())))
-            .append(getPixelSpace(-backgroundWidth/2))
+            .append(getPixelSpace((-backgroundWidth/2)))
+            .append(Component.text(barComponent.get(2)).color(TextColor.color(barColor.getRGB())).font(key))
+            .append(getPixelSpace((-backgroundWidth/2)))
             ;
 
         Component titleText = Component.text("\uF000").font(key)
