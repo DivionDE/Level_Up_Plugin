@@ -85,7 +85,7 @@ public class Progress_Bar {
             .append(createBarComponent(progress, barColor))
             .append(getPixelSpace(xpBarSpace))*/
             .append(getPixelSpace((-backgroundWidth/2)))
-            .append(Component.text(barComponent.get(2)).color(TextColor.color(barColor.getRGB())).font(key))
+            .append(Component.text("\uE003").color(TextColor.color(barColor.getRGB())).font(key))
             .append(getPixelSpace((-backgroundWidth/2)))
             ;
 
